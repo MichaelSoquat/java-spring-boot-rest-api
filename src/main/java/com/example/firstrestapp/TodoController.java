@@ -34,4 +34,10 @@ public class TodoController {
 
         return new ResponseEntity<Todo>(newTodo, HttpStatus.OK);
     }
+
+    @DeleteMapping("/todo")
+    public ResponseEntity delete(@RequestParam(value="id") Integer id) {
+        todoRepository.deleteById(id);
+        return new ResponseEntity("Todo deleted", HttpStatus.GONE);
+    }
 }
