@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 public class UserController {
 
@@ -14,6 +16,7 @@ public class UserController {
 
     @PostMapping("/register")
     private ResponseEntity<User> register(@RequestBody User newUser) {
+        newUser.setSecret(UUID.randomUUID().toString());
         var savedUser = userRepository.save(newUser);
 
         return new ResponseEntity<User>(savedUser, HttpStatus.CREATED);
@@ -27,5 +30,15 @@ public class UserController {
         }
 
         return new ResponseEntity("No user found", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/validate")
+    private ResponseEntity<String> validate(@RequestParam(value="email") String email,
+            @RequestParam(value="password") String password){
+        var validUser = userRepository.findByEmailAndPassword(email,password);
+        if(validUser.isPresent()){
+            return new ResponseEntity<String>( "Api Secret" + validUser.get().getSecret(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("wrong creds", HttpStatus.NOT_FOUND);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.firstrestapp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -20,6 +21,8 @@ public class User {
     @OneToMany
     @JoinColumn(name="userId")
     private Set<Todo> todos;
+
+    private String secret;
 
     public Integer getId() {
         return id;
@@ -51,5 +54,14 @@ public class User {
 
     public void setTodos(Set<Todo> todos) {
         this.todos = todos;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    @JsonIgnore
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }
