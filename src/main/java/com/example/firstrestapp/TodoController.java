@@ -37,7 +37,23 @@ public class TodoController {
 
     @DeleteMapping("/todo")
     public ResponseEntity delete(@RequestParam(value="id") Integer id) {
-        todoRepository.deleteById(id);
-        return new ResponseEntity("Todo deleted", HttpStatus.GONE);
+        Optional<Todo> todoInDB = todoRepository.findById(id);
+
+        if(todoInDB.isPresent()){
+            todoRepository.deleteById(id);
+            return new ResponseEntity("Todo deleted", HttpStatus.GONE);
+        };
+        return new ResponseEntity("No todo to delete found with id" + id, HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/todo")
+    public ResponseEntity edit(@RequestBody Todo editedTodo) {
+        Optional<Todo> todoInDB = todoRepository.findById(editedTodo.getId());
+
+        if(todoInDB.isPresent()){
+            Todo savedTodo = todoRepository.save(editedTodo);
+            return new ResponseEntity<Todo>(savedTodo, HttpStatus.OK);
+        };
+        return new ResponseEntity("No todo to update found with id" + editedTodo.getId(), HttpStatus.NOT_FOUND);
     }
 }
