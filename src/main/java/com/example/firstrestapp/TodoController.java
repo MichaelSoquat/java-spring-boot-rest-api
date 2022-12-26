@@ -20,8 +20,12 @@ public class TodoController {
             return new ResponseEntity<Todo>(todoInDB.get(), HttpStatus.OK);
         }
         return new ResponseEntity("Todo not found with id" + id, HttpStatus.NOT_FOUND);
+    }
 
-
+    @GetMapping("/todo/all")
+    public ResponseEntity<Iterable<Todo>> getAll() {
+        Iterable<Todo> allTodosInDB = todoRepository.findAll();
+        return new ResponseEntity<Iterable<Todo>>(allTodosInDB, HttpStatus.OK);
     }
 
     @PostMapping("/todo")
