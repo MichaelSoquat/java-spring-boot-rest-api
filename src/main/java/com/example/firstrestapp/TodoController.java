@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class TodoController {
 
-    @GetMapping("/greet")
-    public ResponseEntity<String> hello(@RequestParam(value="name") String name) {
-        if(name.equals("admin")) {
-            return new ResponseEntity<String>("Hello " + name, HttpStatus.OK);
-        }
-        return new ResponseEntity<String>("Error", HttpStatus.BAD_REQUEST);
+    @GetMapping("/todo")
+    public ResponseEntity<Todo> get(@RequestParam(value="id") Integer id) {
+        Todo newTodo = new Todo();
+        newTodo.setId(id);
+        newTodo.setDescription("Einkaufen");
+        newTodo.setIsDone(true);
+
+        return new ResponseEntity<Todo>(newTodo, HttpStatus.OK);
 
     }
 
