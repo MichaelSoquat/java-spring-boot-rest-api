@@ -9,10 +9,12 @@ import jakarta.persistence.Id;
 public class Todo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String description;
     private boolean isDone;
+
+    private Integer userId;
 
     public void setId(Integer id) {
         this.id = id;
@@ -36,5 +38,13 @@ public class Todo {
 
     public Boolean getIsDone() {
         return this.isDone;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
