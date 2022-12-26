@@ -56,4 +56,18 @@ public class TodoController {
         };
         return new ResponseEntity("No todo to update found with id" + editedTodo.getId(), HttpStatus.NOT_FOUND);
     }
+
+    @PatchMapping("/todo/setDone")
+    public ResponseEntity<Todo> setDone(@RequestParam(value="isDone") boolean isDone, @RequestParam(value="id") Integer id) {
+        Optional<Todo> todoInDB = todoRepository.findById(id);
+
+                if(todoInDB.isPresent()){
+                    todoInDB.get().setIsDone(isDone);
+                    Todo savedTodo = todoRepository.save(todoInDB.get());
+                    return new ResponseEntity<Todo>(savedTodo, HttpStatus.OK);
+                }
+        return new ResponseEntity("No todo to update found with id" + id, HttpStatus.NOT_FOUND);
+
+    }
+
 }
